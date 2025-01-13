@@ -1,0 +1,23 @@
+
+{
+    // ルーラー
+    "editor.rulers": [80, 88],
+  
+    // python path
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  
+    "[python]": {
+      "editor.codeActionsOnSave": {
+        // isortの並び替えをRuffで実行
+        "source.organizeImports": true
+      },
+      // RuffのFormatter機能を有効化する
+      "editor.defaultFormatter": "charliermarsh.ruff",
+      "editor.formatOnSave": false
+    },
+  
+    // 拡張機能ではなく、pip install した場合に指定してください
+    "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+    "mypy-type-checker.path": ["${workspaceFolder}/.venv/bin/mypy"]
+  }
+  

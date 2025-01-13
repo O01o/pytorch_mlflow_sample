@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ayaki/src/GitHub/pytorch_mlflow_sample/mlruns/0/613b809975034015b41d9dacae3932f4/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 613b809975034015b41d9dacae3932f4
+run_name: bouncy-shrike-488
+run_uuid: 613b809975034015b41d9dacae3932f4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736760424527
+status: 1
+tags: []
+user_id: ayaki

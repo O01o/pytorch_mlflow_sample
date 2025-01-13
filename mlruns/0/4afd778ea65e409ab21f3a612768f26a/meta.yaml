@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ayaki/src/GitHub/pytorch_mlflow_sample/mlruns/0/4afd778ea65e409ab21f3a612768f26a/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4afd778ea65e409ab21f3a612768f26a
+run_name: big-pug-304
+run_uuid: 4afd778ea65e409ab21f3a612768f26a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736759556978
+status: 1
+tags: []
+user_id: ayaki
