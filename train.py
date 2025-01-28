@@ -14,12 +14,12 @@ from entity.params import Config
 from models.simple_cnn import SimpleCNN
 from utils import load_yaml
 
-MLFLOW_TRACKING_URI = "http://localhost:8000" # "http://your_mlflow_tracking_server"
 MLFLOW_EXPERIMENT_NAME = "MNIST_OCR_Experiment"
-
 CONFIG_PATH = "./config/params.yaml"
 
-def main():
+def main(host: str, port: int):
+    mlflow_tracking_uri = f"http://{host}:{port}" # "http://your_mlflow_tracking_server"
+    
     mlflow.end_run()
     
     config: Config = load_yaml.config_by_yaml(CONFIG_PATH)
@@ -39,7 +39,7 @@ def main():
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters())
 
-    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    mlflow.set_tracking_uri(mlflow_tracking_uri)
     mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
     
     with mlflow.start_run() as run:
