@@ -46,9 +46,10 @@ def main(host: str, port: int):
         mlflow.log_param("batch_size", config.batch_size)
         mlflow.log_param("epoch_loop", config.epoch_loop)
 
-        for i, epoch in enumerate(tqdm(range(config.epoch_loop))):
+        for i, epoch in enumerate(range(config.epoch_loop)):
             model.train()
-            for data, target in train_loader:
+            print(f"epoch: {i}")
+            for data, target in tqdm(train_loader):
                 data, target = data.to(device), target.to(device)
                 optimizer.zero_grad()
                 output = model(data)
