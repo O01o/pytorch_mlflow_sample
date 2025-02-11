@@ -45,6 +45,7 @@ def main(host: str, port: int):
     with mlflow.start_run() as run:
         mlflow.log_param("batch_size", config.batch_size)
         mlflow.log_param("epoch_loop", config.epoch_loop)
+        global_step = 0
 
         for i, epoch in enumerate(range(config.epoch_loop)):
             model.train()
@@ -56,7 +57,9 @@ def main(host: str, port: int):
                 loss = criterion(output, target)
                 loss.backward()
                 optimizer.step()
-                mlflow.log_metric("loss", loss.item())
+                
+                global_step += 1
+                mlflow.log_metric("loss", loss.item(), step=global_step)
 
         mlflow.pytorch.log_model(model, "model")
 
