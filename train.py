@@ -32,7 +32,7 @@ def main(host: str, port: int):
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,)),
     ])
-    train_dataset = datasets.MNIST(".", train=True, download=True, transform=transform)
+    train_dataset = datasets.MNIST("./data", train=True, download=True, transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=config.batch_size, shuffle=True)
 
     model = SimpleCNN().to(device)
