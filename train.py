@@ -1,4 +1,4 @@
-import subprocess
+import os
 
 import mlflow
 import mlflow.pytorch
@@ -16,6 +16,8 @@ from utils import load_yaml
 
 MLFLOW_EXPERIMENT_NAME = "MNIST_OCR_Experiment"
 CONFIG_PATH = "./config/params.yaml"
+CHECKPOINT_INTEVAL = 20
+CHECKPOINT_PATH = "ckpt"
 
 def main(host: str, port: int):
     mlflow_tracking_uri = f"http://{host}:{port}" # "http://your_mlflow_tracking_server"
@@ -60,6 +62,9 @@ def main(host: str, port: int):
                 
                 global_step += 1
                 mlflow.log_metric("loss", loss.item(), step=global_step)
+            
+            if (i+1) % CHECKPOINT_INTEVAL == 0:
+                mlflow.pytorch.log_model(model, f"{CHECKPOINT_PATH}_{i+1}")
 
         mlflow.pytorch.log_model(model, "model")
 
