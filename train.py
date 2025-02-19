@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 from entity.params import Config
 from models.simple_cnn import SimpleCNN
-from utils import get_metrics, load_yaml
+from utils import load_yaml
 
 MLFLOW_EXPERIMENT_NAME = "MNIST_OCR_Experiment"
 CONFIG_PATH = "./config/params.yaml"
@@ -63,8 +63,7 @@ def main(host: str, port: int):
                 
                 global_step += 1
                 mlflow.log_metric("loss", loss.item(), step=global_step)
-                mlflow.log_metric("variance", get_metrics.get_variance(loss).item(), step=global_step)
-            
+                            
             model.eval()
             image_path_list = glob.glob(os.path.join("output_images", "*.png"))
             for image_path in image_path_list:
