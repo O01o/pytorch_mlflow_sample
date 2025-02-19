@@ -16,7 +16,7 @@ from utils import get_metrics, load_yaml
 
 MLFLOW_EXPERIMENT_NAME = "MNIST_OCR_Experiment"
 CONFIG_PATH = "./config/params.yaml"
-CHECKPOINT_INTEVAL = 20
+CHECKPOINT_INTEVAL = 1
 CHECKPOINT_PATH = "ckpt"
 
 def main(host: str, port: int):
