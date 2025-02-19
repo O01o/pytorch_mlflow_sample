@@ -13,7 +13,7 @@ transform = transforms.Compose([transforms.ToTensor()])
 mnist_dataset = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
 
 # 保存する画像数
-num_images = 50  # 必要な画像数を変更
+num_images = 12  # 必要な画像数を変更
 
 for i in range(num_images):
     image, label = mnist_dataset[i]  # i番目の画像とラベル

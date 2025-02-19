@@ -1,11 +1,14 @@
+import glob
 import os
 
 import mlflow
 import mlflow.pytorch
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 import typer
+from PIL import Image
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from tqdm import tqdm
@@ -16,8 +19,6 @@ from utils import get_metrics, load_yaml
 
 MLFLOW_EXPERIMENT_NAME = "MNIST_OCR_Experiment"
 CONFIG_PATH = "./config/params.yaml"
-CHECKPOINT_INTEVAL = 1
-CHECKPOINT_PATH = "ckpt"
 
 def main(host: str, port: int):
     mlflow_tracking_uri = f"http://{host}:{port}" # "http://your_mlflow_tracking_server"
@@ -64,10 +65,18 @@ def main(host: str, port: int):
                 mlflow.log_metric("loss", loss.item(), step=global_step)
                 mlflow.log_metric("variance", get_metrics.get_variance(loss).item(), step=global_step)
             
-            if (i+1) % CHECKPOINT_INTEVAL == 0:
-                mlflow.pytorch.log_model(model, f"{CHECKPOINT_PATH}_{i+1}")
+            model.eval()
+            image_path_list = glob.glob(os.path.join("output_images", "*.png"))
+            for image_path in image_path_list:
+                image = Image.open(image_path).convert("L")  # グレースケールに変換
+                image = transform(image).unsqueeze(0).to(device)  # バッチ次元追加
 
-        mlflow.pytorch.log_model(model, "model")
+                with torch.no_grad():
+                    output = model()
+                    probabilities = F.softmax(output, dim=1)
+                    predicted_class = torch.argmax(probabilities, dim=1).item()
+
+                print(f"image_name: {os.path.basename(image_path)} Predicted class: {predicted_class}")
 
 
 if __name__ == "__main__":
