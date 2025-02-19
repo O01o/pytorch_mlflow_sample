@@ -72,7 +72,7 @@ def main(host: str, port: int):
                 image = transform(image).unsqueeze(0).to(device)  # バッチ次元追加
 
                 with torch.no_grad():
-                    output = model()
+                    output = model(image)
                     probabilities = F.softmax(output, dim=1)
                     predicted_class = torch.argmax(probabilities, dim=1).item()
 
