@@ -2,12 +2,10 @@ import glob
 import os
 
 import mlflow
-import mlflow.pytorch
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import typer
 from PIL import Image
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -18,11 +16,10 @@ from models.simple_cnn import SimpleCNN
 from utils import load_yaml
 
 MLFLOW_EXPERIMENT_NAME = "MNIST_OCR_Experiment"
-CONFIG_PATH = "./config/params.yaml"
+CONFIG_PATH = "../resources/config/params.yaml"
+DATASET_PATH = "../resources/datasetss/"
 
-def main(host: str, port: int):
-    mlflow_tracking_uri = f"http://{host}:{port}" # "http://your_mlflow_tracking_server"
-    
+def train(mlflow_tracking_uri: str):
     mlflow.end_run()
     
     config: Config = load_yaml.config_by_yaml(CONFIG_PATH)
@@ -35,7 +32,7 @@ def main(host: str, port: int):
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,)),
     ])
-    train_dataset = datasets.MNIST("./data", train=True, download=True, transform=transform)
+    train_dataset = datasets.MNIST(DATASET_PATH, train=True, download=True, transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=config.batch_size, shuffle=True)
 
     model = SimpleCNN().to(device)
@@ -48,11 +45,11 @@ def main(host: str, port: int):
     with mlflow.start_run() as run:
         mlflow.log_param("batch_size", config.batch_size)
         mlflow.log_param("epoch_loop", config.epoch_loop)
-        global_step = 0
+        step = 0
 
-        for i, epoch in enumerate(range(config.epoch_loop)):
+        for epoch in range(config.epoch_loop):
             model.train()
-            print(f"epoch: {i}")
+            print(f"epoch: {epoch}")
             for data, target in tqdm(train_loader):
                 data, target = data.to(device), target.to(device)
                 optimizer.zero_grad()
@@ -61,8 +58,8 @@ def main(host: str, port: int):
                 loss.backward()
                 optimizer.step()
                 
-                global_step += 1
-                mlflow.log_metric("loss", loss.item(), step=global_step)
+                step += 1
+                mlflow.log_metric("loss", loss.item(), step=step)
                             
             model.eval()
             image_path_list = glob.glob(os.path.join("output_images", "*.png"))
@@ -76,7 +73,3 @@ def main(host: str, port: int):
                     predicted_class = torch.argmax(probabilities, dim=1).item()
 
                 print(f"image_name: {os.path.basename(image_path)} Predicted class: {predicted_class}")
-
-
-if __name__ == "__main__":
-    typer.run(main)
