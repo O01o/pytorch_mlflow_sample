@@ -16,8 +16,8 @@ from models.simple_cnn import SimpleCNN
 from utils import load_yaml
 
 MLFLOW_EXPERIMENT_NAME = "MNIST_OCR_Experiment"
-CONFIG_PATH = "../resources/config/params.yaml"
-DATASET_PATH = "../resources/datasetss/"
+CONFIG_PATH = "./resources/config/params.yaml"
+DATASET_PATH = "./resources/datasets/"
 
 def train(mlflow_tracking_uri: str):
     mlflow.end_run()

@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "httpx>=0.28.1",
+    "line-bot-sdk>=3.17.1",
     "mlflow>=2.22.0",
     "numpy>=2.2.5",
     "pydantic>=2.11.3",
